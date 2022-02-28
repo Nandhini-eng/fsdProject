@@ -1,1 +1,3 @@
 node_modules
+mongodb\data\diagnostic.data
+mongodb\data\journal
