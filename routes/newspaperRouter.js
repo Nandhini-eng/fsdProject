@@ -23,6 +23,25 @@ newspaperRouter.route('/')
     res.statusCode = 403;
     res.end('PUT operation not supported on /newspapers');
 })
+.post((req, res, next) => {
+    Newspapers.create(req.body)
+    .then((newspaper) => {
+        console.log('Newspaper Created ', newspaper);
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(newspaper);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+.delete((req, res, next) => {
+    Newspapers.remove({})
+    .then((resp) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(resp);
+    }, (err) => next(err))
+    .catch((err) => next(err));    
+});
 
 
 newspaperRouter.route('/:paperId')
@@ -39,6 +58,26 @@ newspaperRouter.route('/:paperId')
   res.statusCode = 403;
   res.end('POST operation not supported on /newspapers/'+ req.params.newspaperId);
 })
+.put((req, res, next) => {
+    Newspapers.findByIdAndUpdate(req.params.paperId, {
+        $set: req.body
+    }, { new: true })
+    .then((newspaper) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(newspaper);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+.delete((req, res, next) => {
+    Newspapers.findByIdAndRemove(req.params.paperId)
+    .then((resp) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(resp);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+});
 
 
 
@@ -191,6 +230,5 @@ newspaperRouter.route('/:paperId/reviews/:reviewId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-
 
 module.exports = newspaperRouter;
