@@ -7,7 +7,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var newspapersRouter = require('./routes/newspaperRouter');
-var magazinesRouter = require('./routes/magazineRouter')
+var magazinesRouter = require('./routes/magazineRouter');
+var blogRouter = require('./routes/blogRouter')
 
 var app = express();
 
@@ -25,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const mongoose = require('mongoose');
 
 
-const url = 'mongodb://localhost:27017/fsdProject';
+const url = 'mongodb+srv://swethat03:8341772476@cluster0.4wv9m.mongodb.net/fsd3project'
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
@@ -37,7 +38,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/newspapers',newspapersRouter);
 app.use('/magazines',magazinesRouter);
-
+app.use('/blogs',blogRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
