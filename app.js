@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/usersRouter');
 var newspapersRouter = require('./routes/newspaperRouter');
 var magazinesRouter = require('./routes/magazineRouter')
 
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const mongoose = require('mongoose');
 
 
-const url = 'mongodb://localhost:27017/fsdProject';
+const url = 'mongodb+srv://Bhanu:bhanu@cluster0.4wv9m.mongodb.net/fsd3project';
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
