@@ -7,10 +7,15 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var newspapersRouter = require('./routes/newspaperRouter');
+var magazinesRouter = require('./routes/magazineRouter');
+
 var uploadRouter = require('./routes/uploadRouter');
 
-
 var app = express();
+const swaggerUi = require('swagger-ui-express')
+const YAML = require('yamljs')
+const swaggerDocument = YAML.load('./swagger.yaml')
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,12 +27,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(
+  "/swagger-api",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+);
+
 
 const mongoose = require('mongoose');
 
-const Newspapers = require('./models/newspapers');
 
 const url = 'mongodb+srv://Nandhini:Nandy2002@cluster0.4wv9m.mongodb.net/fsd3project';
+// const url = 'mongodb+srv://bhagya:bhagya23@cluster0.4wv9m.mongodb.net/fsd3project';
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
@@ -39,6 +50,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/newspapers', newspapersRouter);
 app.use('/imgUpload', uploadRouter);
+app.use('/magazines', magazinesRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

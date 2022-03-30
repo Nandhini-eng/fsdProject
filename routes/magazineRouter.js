@@ -2,41 +2,39 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const Newspapers = require('../models/newspapers');
+const Magazines = require('../models/magazines');
 
-const newspaperRouter = express.Router();
+const magazineRouter = express.Router();
 
-newspaperRouter.use(bodyParser.json());
+magazineRouter.use(bodyParser.json());
 
-var cors = require('cors');
 
-newspaperRouter.route('/')
-.options(cors(), (req,res) => {res.sendStatus(200); })
+magazineRouter.route('/')
 .get((req,res,next) => {
-    Newspapers.find({})
-    .then((newspapers) => {
+    Magazines.find({})
+    .then((magazines) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(newspapers);
+        res.json(magazines);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end('PUT operation not supported on /newspapers');
+    res.end('PUT operation not supported on /magazines');
 })
 .post((req, res, next) => {
-    Newspapers.create(req.body)
-    .then((newspaper) => {
-        console.log('Newspaper Created ', newspaper);
+    Magazines.create(req.body)
+    .then((magazine) => {
+        console.log('Magazine Created ', magazine);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(newspaper);
+        res.json(magazine);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .delete((req, res, next) => {
-    Newspapers.remove({})
+    Magazines.remove({})
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -46,34 +44,33 @@ newspaperRouter.route('/')
 });
 
 
-newspaperRouter.route('/:paperId')
-.options(cors(), (req,res) => {res.sendStatus(200); })
+magazineRouter.route('/:magId')
 .get((req,res,next) => {
-    Newspapers.findById(req.params.paperId)
-    .then((newspaper) => {
+    Magazines.findById(req.params.magId)
+    .then((magazine) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(newspaper);
+        res.json(magazine);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
   res.statusCode = 403;
-  res.end('POST operation not supported on /newspapers/'+ req.params.paperId);
+  res.end('POST operation not supported on /magazines/'+ req.params.magId);
 })
 .put((req, res, next) => {
-    Newspapers.findByIdAndUpdate(req.params.paperId, {
+    Magazines.findByIdAndUpdate(req.params.magId, {
         $set: req.body
     }, { new: true })
-    .then((newspaper) => {
+    .then((magazine) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(newspaper);
+        res.json(magazine);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .delete((req, res, next) => {
-    Newspapers.findByIdAndRemove(req.params.paperId)
+    Magazines.findByIdAndRemove(req.params.magId)
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -84,18 +81,17 @@ newspaperRouter.route('/:paperId')
 
 
 
-newspaperRouter.route('/:paperId/reviews')
-.options(cors(), (req,res) => {res.sendStatus(200); })
+magazineRouter.route('/:magId/reviews')
 .get((req,res,next) => {
-    Newspapers.findById(req.params.paperId)
-    .then((newspaper) => {
-        if (newspaper != null) {
+    Magazines.findById(req.params.magId)
+    .then((magazine) => {
+        if (magazine != null) {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json(newspaper.reviews);
+            res.json(magazine.reviews);
         }
         else {
-            err = new Error('Newspaper ' + req.params.paperId + ' not found');
+            err = new Error('Magazine ' + req.params.magId + ' not found');
             err.status = 404;
             return next(err);
         }
@@ -103,19 +99,19 @@ newspaperRouter.route('/:paperId/reviews')
     .catch((err) => next(err));
 })
 .post((req,res,next) => {
-    Newspapers.findById(req.params.paperId)
-    .then((newspaper) => {
-        if (newspaper != null) {
-            newspaper.reviews.push(req.body);
-            newspaper.save()
-            .then((newspaper) => {
+    Magazines.findById(req.params.magId)
+    .then((magazine) => {
+        if (magazine != null) {
+            magazine.reviews.push(req.body);
+            magazine.save()
+            .then((magazine) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(newspaper);
+                res.json(magazine);
             }, (err) => next(err));
         }
         else {
-            err = new Error('Newspaper ' + req.params.paperId + ' not found');
+            err = new Error('Magazine ' + req.params.magId + ' not found');
             err.status = 404;
             return next(err);
         }
@@ -124,26 +120,26 @@ newspaperRouter.route('/:paperId/reviews')
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end('PUT operation not supported on /newspapers/'
-        + req.params.paperId + '/reviews');
+    res.end('PUT operation not supported on /magazines/'
+        + req.params.magId + '/reviews');
 })
 .delete((req,res,next) => {
-    Newspapers.findById(req.params.paperId)
-    .then((newspaper) => {
-        if (newspaper != null) {
-            len = newspaper.reviews.length;
+    Magazines.findById(req.params.magId)
+    .then((magazine) => {
+        if (magazine != null) {
+            len = magazine.reviews.length;
             for (var i = len-1; i >= 0; i--) {
-                newspaper.reviews.id(newspaper.reviews[i]._id).remove();
+                magazine.reviews.id(magazine.reviews[i]._id).remove();
             }
-            newspaper.save()
-            .then((newspaper) => {
+            magazine.save()
+            .then((magazine) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(newspaper);
+                res.json(magazine);
             }, (err) => next(err));
         }
         else {
-            err = new Error('Newspaper ' + req.params.paperId + ' not found');
+            err = new Error('Magazine ' + req.params.magId + ' not found');
             err.status = 404;
             return next(err);
         }
@@ -152,18 +148,17 @@ newspaperRouter.route('/:paperId/reviews')
 })
 
 
-newspaperRouter.route('/:paperId/reviews/:reviewId')
-.options(cors(), (req,res) => {res.sendStatus(200); })
+magazineRouter.route('/:magId/reviews/:reviewId')
 .get((req,res,next) => {
-    Newspapers.findById(req.params.paperId)
-    .then((newspaper) => {
-        if (newspaper != null && newspaper.reviews.id(req.params.reviewId) != null) {
+    Magazines.findById(req.params.magId)
+    .then((magazine) => {
+        if (magazine != null && magazine.reviews.id(req.params.reviewId) != null) {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json(newspaper.reviews.id(req.params.reviewId));
+            res.json(magazine.reviews.id(req.params.reviewId));
         }
-        else if (newspaper == null) {
-            err = new Error('Newspaper ' + req.params.paperId + ' not found');
+        else if (magazine == null) {
+            err = new Error('Magazine ' + req.params.magId + ' not found');
             err.status = 404;
             return next(err);
         }
@@ -177,28 +172,28 @@ newspaperRouter.route('/:paperId/reviews/:reviewId')
 })
 .post((req, res, next) => {
     res.statusCode = 403;
-    res.end('POST operation not supported on /newspapers/'+ req.params.paperId
+    res.end('POST operation not supported on /magazines/'+ req.params.magId
         + '/reviews/' + req.params.reviewId);
 })
 .put((req,res,next) => {
-    Newspapers.findById(req.params.paperId)
-    .then((newspaper) => {
-        if (newspaper != null && newspaper.reviews.id(req.params.reviewId) != null) {
+    Magazines.findById(req.params.magId)
+    .then((magazine) => {
+        if (magazine != null && magazine.reviews.id(req.params.reviewId) != null) {
             if (req.body.rating){
-                newspaper.reviews.id(req.params.reviewId).rating = req.body.rating;
+                magazine.reviews.id(req.params.reviewId).rating = req.body.rating;
             }
             if (req.body.review){
-                newspaper.reviews.id(req.params.reviewId).review = req.body.review;
+                magazine.reviews.id(req.params.reviewId).review = req.body.review;
             }
-            newspaper.save()
-            .then((newspaper) => {
+            magazine.save()
+            .then((magazine) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(newspaper);
+                res.json(magazine);
             }, (err) => next(err))
         }
-        else if (newspaper == null) {
-            err = new Error('Newspaper ' + req.params.paperId + ' not found');
+        else if (magazine == null) {
+            err = new Error('Magazine ' + req.params.magId + ' not found');
             err.status = 404;
             return next(err);
         }
@@ -211,19 +206,19 @@ newspaperRouter.route('/:paperId/reviews/:reviewId')
     .catch((err) => next(err));
 })
 .delete((req,res,next) => {
-    Newspapers.findById(req.params.paperId)
-    .then((newspaper) => {
-        if (newspaper != null && newspaper.reviews.id(req.params.reviewId) != null) {
-            newspaper.reviews.id(req.params.reviewId).remove();
-            newspaper.save()
-            .then((newspaper) => {
+    Magazines.findById(req.params.magId)
+    .then((magazine) => {
+        if (magazine != null && magazine.reviews.id(req.params.reviewId) != null) {
+            magazine.reviews.id(req.params.reviewId).remove();
+            magazine.save()
+            .then((magazine) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(newspaper);
+                res.json(magazine);
             }, (err) => next(err))
         }
-        else if (newspaper == null) {
-            err = new Error('Newspaper ' + req.params.paperId + ' not found');
+        else if (magazine == null) {
+            err = new Error('Magazine ' + req.params.magId + ' not found');
             err.status = 404;
             return next(err);
         }
@@ -236,4 +231,4 @@ newspaperRouter.route('/:paperId/reviews/:reviewId')
     .catch((err) => next(err));
 })
 
-module.exports = newspaperRouter;
+module.exports = magazineRouter;
