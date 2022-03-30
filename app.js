@@ -10,6 +10,10 @@ var newspapersRouter = require('./routes/newspaperRouter');
 var magazinesRouter = require('./routes/magazineRouter')
 
 var app = express();
+const swaggerUi = require('swagger-ui-express')
+const YAML = require('yamljs')
+const swaggerDocument = YAML.load('./swagger.yaml')
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,11 +25,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(
+  "/swagger-api",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+);
+
 
 const mongoose = require('mongoose');
 
 
-const url = 'mongodb://localhost:27017/fsdProject';
+const url = 'mongodb+srv://bhagya:bhagya23@cluster0.4wv9m.mongodb.net/fsd3project';
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
