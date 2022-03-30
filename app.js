@@ -7,6 +7,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var newspapersRouter = require('./routes/newspaperRouter');
+var uploadRouter = require('./routes/uploadRouter');
+
 
 var app = express();
 
@@ -25,18 +27,18 @@ const mongoose = require('mongoose');
 
 const Newspapers = require('./models/newspapers');
 
-const url = 'mongodb://localhost:27017/fsdProject';
+const url = 'mongodb+srv://Nandhini:Nandy2002@cluster0.4wv9m.mongodb.net/fsd3project';
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
-    console.log("Connected correctly to mongodb server");
+    console.log("Connected correctly to mongodb cloud");
 }, (err) => { console.log(err); });
 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/newspapers',newspapersRouter);
-
+app.use('/newspapers', newspapersRouter);
+app.use('/imgUpload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

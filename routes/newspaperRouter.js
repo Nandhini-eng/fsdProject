@@ -8,8 +8,10 @@ const newspaperRouter = express.Router();
 
 newspaperRouter.use(bodyParser.json());
 
+var cors = require('cors');
 
 newspaperRouter.route('/')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Newspapers.find({})
     .then((newspapers) => {
@@ -45,6 +47,7 @@ newspaperRouter.route('/')
 
 
 newspaperRouter.route('/:paperId')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Newspapers.findById(req.params.paperId)
     .then((newspaper) => {
@@ -82,6 +85,7 @@ newspaperRouter.route('/:paperId')
 
 
 newspaperRouter.route('/:paperId/reviews')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Newspapers.findById(req.params.paperId)
     .then((newspaper) => {
@@ -149,6 +153,7 @@ newspaperRouter.route('/:paperId/reviews')
 
 
 newspaperRouter.route('/:paperId/reviews/:reviewId')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Newspapers.findById(req.params.paperId)
     .then((newspaper) => {
