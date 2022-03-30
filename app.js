@@ -4,9 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var cors = require('cors');
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var newspapersRouter = require('./routes/newspaperRouter');
+var magazinesRouter = require('./routes/magazineRouter')
+var ordersRouter=require('./routes/ordersRouter')
 
 var app = express();
 
@@ -19,13 +24,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors({origin: true, credentials: true}));
 
 
 const mongoose = require('mongoose');
 
-const Newspapers = require('./models/newspapers');
 
-const url = 'mongodb://localhost:27017/fsdProject';
+const url = 'mongodb+srv://samhithareddy:Samhi_905@cluster0.4wv9m.mongodb.net/fsd3project';
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
@@ -36,6 +41,9 @@ connect.then((db) => {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/newspapers',newspapersRouter);
+app.use('/magazines',magazinesRouter);
+app.use('/orders',ordersRouter);
+
 
 
 // catch 404 and forward to error handler
