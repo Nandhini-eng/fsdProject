@@ -5,12 +5,14 @@ info:
   description: Subscription of newspapers and magazines
 
 servers:
-  - url: http://localhost:3000/
+  - url: http://localhost:3001/
 tags:
   - name: Newspapers
     description: API to manage the newspapers.
   - name: Magazines
     description: API to manage the magazines.
+  - name: Orders
+    description: API to manage orders.  
 
 paths:
   /newspapers:
@@ -464,6 +466,32 @@ paths:
           description: Deleted review of a magazine.
         '404': 
           description: Magazine or review not found.
+  
+  /orders:
+    get:
+      summary: Lists of all orders
+      tags: [Orders]
+      responses:
+        "200":
+          description: The list of orders.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+    
+    post:
+      summary: Creates an order
+      tags: [Orders]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Orders'
+      responses:
+        '201':
+          description: Created
+   
 
 
 components:
@@ -586,7 +614,152 @@ components:
         rating: 4
         review: Nice newspaper with lots of new information 
         author: Saritha
+
+
+
+
+
+    Orders:
+      type: object
+      required:
+        - fullName
+        - address
+        - city
+        - postalCode
+        - country
+        - NameOnCard
+        - CreditCardNum
+        - ExpMon
+        - ExpYear
+        - Cvv
+        - cart
+        - user
+        - price
+        
+      properties:
+        id:
+          type: integer 
+          description: The auto-generated id of the order.
+        fullName:
+          type: string
+          description: The name of the user placing order.
+        address:
+          type: string
+          description: The address of user.
+        city:
+          type: string
+          description: City where user resites.
+        postalCode:
+          type: number
+          description: postal code of user's place.
+        country:
+          type: string
+          description: country of user.
+        NameOnCard:
+          type: string
+          description: name on credit card or debit card.
+        CreditCardNum:
+          type: string
+          description: Number of credit card/debit card.
+        ExpMon:
+          type: number 
+          description: expiry month of credit/debit card.
+        ExpYear:
+          type: number
+          description: expiry year credit card or debit card.
+        Cvv:
+          type: number
+          description: Cvv of Credit/debit card.          
+        cart:
+          $ref: "#/components/schemas/Cart"
+          description: Cart items before placing order.
+        -user:
+          type: string
+          description: name of user.
+        -price:
+          type: number
+          description: price of total items.  
+        -items :
+          type : number
+          description : total number of items
+        -date :
+          type : string
+          description : date on which order placed
+
+
+
+            
+        
+      example:
+       
+        fullName : samhitha
+        address : sbi colony 6th line
+        city : pulivendula
+        postalCode : 516390
+        country : India
+        NameOnCard : samhitha bhumireddy
+        CreditCardNum : 1234 8754 3459 0982
+        ExpMon : 09
+        ExpYear : 2023
+        Cvv : 143
+        cart : []
+        user : samhitha
+        price : 1500
+        items : 3
+        date : 2022-01-06T13:32:50.516Z
+
+
+    Cart:
+      type: object
+      required:
+        - name
+        - image
+        - language
+        - price
+        - description
+        - qty
+
+
+      properties:
+        id:
+          type: integer 
+          description: The auto-generated id of the cart item.
+        name:
+          type: string
+          description: The name of the magazine/newspaper.
+        image:
+          type: string
+          description: Url of the image of magazine/newspaper.
+        language:
+          type: string
+          description: Language of magazine/newspapers.
+        price:
+          type: number 
+          description: The price of magazine/newspaper.      
+        description:
+          type: string
+          description: The details of magazine/newspapers.
+        category:
+          type: string
+          description: The category of magazine which it belongs to null for newspaper.  
+        qty:
+          type: number
+          description: number of items
         
         
+        
+      example:
+        name: Business world
+        image: assets/images/im1.jpg
+        language: English
+        price: 367
+        description: BW Businessworld is an Indian business magazine. The magazine was published by ABP Group, whose most prominent publications are The Telegraph, Anandabazar Patrika, Sananda, Anandamela and others.
+        category: business
+        qty : 3
+
+
+
+
+      
 
 
