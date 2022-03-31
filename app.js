@@ -8,8 +8,11 @@ var cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/usersRouter');
 var newspapersRouter = require('./routes/newspaperRouter');
-var magazinesRouter = require('./routes/magazineRouter')
+
+var magazinesRouter = require('./routes/magazineRouter');
+var blogRouter = require('./routes/blogRouter')
 var ordersRouter=require('./routes/ordersRouter')
+
 
 var app = express();
 const swaggerUi = require('swagger-ui-express')
@@ -38,7 +41,9 @@ app.use(
 const mongoose = require('mongoose');
 
 
-const url = 'mongodb+srv://Bhanu:bhanu@cluster0.4wv9m.mongodb.net/fsd3project';
+
+const url = 'mongodb+srv://swethat03:8341772476@cluster0.4wv9m.mongodb.net/fsd3project';
+//const url = 'mongodb+srv://Bhanu:bhanu@cluster0.4wv9m.mongodb.net/fsd3project';
 //const url = 'mongodb+srv://Nandhini:Nandy2002@cluster0.4wv9m.mongodb.net/fsd3project';
 // const url = 'mongodb+srv://bhagya:bhagya23@cluster0.4wv9m.mongodb.net/fsd3project';
 //const url = 'mongodb+srv://samhithareddy:Samhi_905@cluster0.4wv9m.mongodb.net/fsd3project';
@@ -53,8 +58,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/newspapers',newspapersRouter);
 app.use('/magazines',magazinesRouter);
-app.use('/orders',ordersRouter);
 
+app.use('/blogs',blogRouter);
+
+app.use('/orders',ordersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
