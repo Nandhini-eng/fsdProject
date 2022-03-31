@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
-const reviewSchema = require('./reviews');
 
 const feedbacksSchema = new Schema({
     firstname:{
@@ -24,7 +23,7 @@ const feedbacksSchema = new Schema({
         required:true
     },
     contacttype:{
-        type: string,
+        type: String,
         required:true
     },
     agree:{
