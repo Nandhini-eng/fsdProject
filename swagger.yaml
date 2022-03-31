@@ -11,6 +11,8 @@ tags:
     description: API to manage the newspapers.
   - name: Magazines
     description: API to manage the magazines.
+  - name: Users
+    description : API to manage registered users
   - name: Orders
     description: API to manage orders.  
 
@@ -265,6 +267,7 @@ paths:
       responses:
         '201':
           description: Created
+
     delete:
       summary: Deletes all magazines
       tags: [Magazines]
@@ -467,6 +470,121 @@ paths:
         '404': 
           description: Magazine or review not found.
   
+  /users:
+    get : 
+      summary: Lists all Users
+      tags: [Users]
+      responses:
+        "200":
+          description: The list of users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    
+    post:
+      summary: Creates a new user
+      tags: [Users]
+      $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User Created
+        '404':
+          description: Username already exists
+
+    
+    delete : 
+      summary: Deletes all users
+      tags: [Users]
+      responses:
+        '200':
+          description: Users are deleted.
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/User'
+
+  /users/{username}:
+    get:
+      summary: Returns a user by username.
+      tags: [Users]
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: username created by user
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found.
+    
+    put:
+      summary: Updates username by given username
+      tags: [Users]
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: username created by user
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Updated
+        '404':
+          description: User not found or new username is already existing.
+
+    delete:
+      summary: Deletes a particular user.
+      tags: [Users]
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: username created by user
+          schema:
+            type : string
+      responses:
+        '200':
+          description: Deleted user.
+        '404':
+          description : Username not found
+
+  /users/user/{cred}:
+    get:
+      summary: Validates user.
+      tags: [Users]
+      parameters:
+        - name: username + password
+          in: path
+          required: true
+          description: username, password created by user
+          schema:
+            type : string
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User credentials not true.
+
+
   /orders:
     get:
       summary: Lists of all orders
@@ -486,14 +604,12 @@ paths:
         required: true
         content:
           application/json:
-            schema:
+            schema:  
               $ref: '#/components/schemas/Orders'
       responses:
         '201':
           description: Created
-   
-
-
+  
 components:
   schemas:
     Newspaper:
@@ -614,11 +730,31 @@ components:
         rating: 4
         review: Nice newspaper with lots of new information 
         author: Saritha
-
-
-
-
-
+  
+    User:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        id:
+          type: integer 
+          description: The auto-generated id of the user.
+        username:
+          type: string
+          description: Username of user.
+        password:
+          type: string
+          description: Password of user.
+        admin:
+          type: boolean
+          description: True if user is also an admin.
+                
+      example:
+        username: Bhanu
+        password : xxx
+        admin : True
+  
     Orders:
       type: object
       required:
@@ -634,11 +770,10 @@ components:
         - Cvv
         - cart
         - user
-        - price
-        
+        - price  
       properties:
         id:
-          type: integer 
+          type: integer    
           description: The auto-generated id of the order.
         fullName:
           type: string
@@ -685,11 +820,7 @@ components:
         -date :
           type : string
           description : date on which order placed
-
-
-
-            
-        
+   
       example:
        
         fullName : samhitha
@@ -708,7 +839,6 @@ components:
         items : 3
         date : 2022-01-06T13:32:50.516Z
 
-
     Cart:
       type: object
       required:
@@ -718,7 +848,6 @@ components:
         - price
         - description
         - qty
-
 
       properties:
         id:
@@ -757,8 +886,7 @@ components:
         category: business
         qty : 3
 
-
-
+    
 
       
 
