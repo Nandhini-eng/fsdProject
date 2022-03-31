@@ -8,6 +8,7 @@ var cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/usersRouter');
 var newspapersRouter = require('./routes/newspaperRouter');
+var feedbackRouter = require('./routes/feedbackRouter')
 
 var magazinesRouter = require('./routes/magazineRouter');
 var blogRouter = require('./routes/blogRouter')
@@ -58,6 +59,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/newspapers',newspapersRouter);
 app.use('/magazines',magazinesRouter);
+app.use('/feedbacks',feedbackRouter);
 
 app.use('/blogs',blogRouter);
 
