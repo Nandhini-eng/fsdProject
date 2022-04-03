@@ -483,13 +483,18 @@ paths:
                 $ref: '#/components/schemas/User'
     
     post:
-      summary: Creates a new user
+      summary: Creates an user
       tags: [Users]
-      $ref: '#/components/schemas/User'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
       responses:
         '201':
-          description: User Created
-        '404':
+          description: Created
+        '404' :
           description: Username already exists
 
     

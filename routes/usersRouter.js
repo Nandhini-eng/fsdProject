@@ -53,9 +53,16 @@ router.route('/:username')
   .get((req, res, next) => {
     Users.find({ 'username': req.params.username })
       .then((user) => {
-        res.statusCode = 200
-        res.setHeader('Content-Type', 'application/json')
-        res.json(user)
+        if(user.length!=0){
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'application/json')
+          res.json(user)
+        }
+        else{
+          err = new Error('User ' + req.params.username + ' doesnot exists');
+          err.status = 404;
+          return next(err);
+        }
       }, (err) => next(err))
       .catch((err) => next(err))
   })
