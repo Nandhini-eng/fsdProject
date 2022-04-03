@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "body-parser": "^1.19.2",
     "concurrently": "^7.0.0",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
@@ -13,8 +14,9 @@
     "express": "^4.16.4",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
-    "mongoose": "5.1.7",
-    "mongoose-currency": "0.2.0",
+
+    "mongoose": "~5.1.7",
+    "mongoose-currency": "~0.2.0",
     "morgan": "~1.9.0",
     "node": "^17.4.0",
     "multer": "^1.4.4",

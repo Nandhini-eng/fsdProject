@@ -1,0 +1,71 @@
+
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+const feedback = require('../models/feedback');
+
+const feedbackRouter = express.Router();
+
+feedbackRouter.use(bodyParser.json());
+
+
+feedbackRouter.route('/')
+.get((req,res,next) => {
+    feedback.find({})
+    .then((feedbacks) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(feedbacks);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+.put((req, res, next) => {
+    res.statusCode = 403;
+    res.end('PUT operation not supported on /feedback');
+})
+.post((req, res, next) => {
+    feedback.create(req.body)
+    .then((feedback) => {
+        console.log('feedback Created ', feedback);
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(feedback);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+.delete((req, res, next) => {
+        res.statusCode = 403;
+        res.end('Delete operation not supported on /feedback');
+          
+});
+
+
+feedbackRouter.route('/:feedId')
+.get((req,res,next) => {
+        res.statusCode = 403;
+        res.end('Get operation not supported on /feedback');
+})
+.post((req,res,next) => {
+    res.statusCode = 403;
+    res.end('Post operation not supported on /feedback');
+})
+.put((req, res, next) => {
+    feedback.findByIdAndUpdate(req.params.feedId, {
+        $set: req.body
+    }, { new: true })
+    .then((feedback) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(feedback);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+.delete((req, res, next) => {
+        res.statusCode = 403;
+        res.end('Delete operation not supported on /feedback');
+});
+
+
+module.exports = feedbackRouter;
