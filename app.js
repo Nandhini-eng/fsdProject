@@ -8,8 +8,11 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var newspapersRouter = require('./routes/newspaperRouter');
 var magazinesRouter = require('./routes/magazineRouter');
+var reviewsRouter = require('./routes/reviewRouter');
 
 var uploadRouter = require('./routes/uploadRouter');
+
+var cors = require('cors');
 
 var app = express();
 const swaggerUi = require('swagger-ui-express')
@@ -33,6 +36,7 @@ app.use(
   swaggerUi.setup(swaggerDocument)
 );
 
+app.use(cors());
 
 const mongoose = require('mongoose');
 
@@ -49,9 +53,9 @@ connect.then((db) => {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/newspapers', newspapersRouter);
-app.use('/imgUpload', uploadRouter);
 app.use('/magazines', magazinesRouter);
-
+app.use('/reviews', reviewsRouter);
+app.use('/imgUpload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

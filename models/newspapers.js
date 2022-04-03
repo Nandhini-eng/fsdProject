@@ -4,10 +4,6 @@ const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
-
-const reviewSchema = require('./reviews');
-
-
 const newspaperSchema = new Schema({
     name: {
         type: String,
@@ -34,8 +30,7 @@ const newspaperSchema = new Schema({
     featured: {
         type: Boolean,
         default: false      
-    },
-    reviews: [ reviewSchema ]
+    }
 },{
     timestamps: true
 });
