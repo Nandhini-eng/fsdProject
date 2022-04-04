@@ -8,12 +8,15 @@ var cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/usersRouter');
 var newspapersRouter = require('./routes/newspaperRouter');
-var feedbackRouter = require('./routes/feedbackRouter')
-
 var magazinesRouter = require('./routes/magazineRouter');
+var reviewsRouter = require('./routes/reviewRouter');
+var uploadRouter = require('./routes/uploadRouter');
+var feedbackRouter = require('./routes/feedbackRouter');
 var blogRouter = require('./routes/blogRouter')
 var ordersRouter=require('./routes/ordersRouter')
 
+
+var cors = require('cors');
 
 var app = express();
 const swaggerUi = require('swagger-ui-express')
@@ -57,12 +60,12 @@ connect.then((db) => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/newspapers',newspapersRouter);
-app.use('/magazines',magazinesRouter);
+app.use('/newspapers', newspapersRouter);
+app.use('/magazines', magazinesRouter);
+app.use('/reviews', reviewsRouter);
+app.use('/imgUpload', uploadRouter);
 app.use('/feedbacks',feedbackRouter);
-
 app.use('/blogs',blogRouter);
-
 app.use('/orders',ordersRouter);
 
 // catch 404 and forward to error handler

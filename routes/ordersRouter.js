@@ -9,8 +9,11 @@ const ordersRouter = express.Router();
 ordersRouter.use(bodyParser.json());
 var cors= require('cors')
 
+var cors = require('cors');
 
 ordersRouter.route('/')
+.options(cors(), (req,res) => {res.sendStatus(200); })
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Orders.find({})
     .then((orders) => {
@@ -126,11 +129,6 @@ ordersRouter.route('/:orderId/:itemId')
 }
 
 );
-
-
-
-
-
 
 
 

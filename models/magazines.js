@@ -4,9 +4,6 @@ const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
-
-const reviewSchema = require('./reviews');
-
 const magazinesSchema = new Schema({
     name:{
         type: String,
@@ -35,11 +32,11 @@ const magazinesSchema = new Schema({
     category:{
         type: String,
         required:true
-    },
-    reviews:[ reviewSchema ]
+    }
 },{
     timestamps: true       
 });
+
 var Magazines = mongoose.model('Magazines', magazinesSchema);
 
 module.exports = Magazines;
