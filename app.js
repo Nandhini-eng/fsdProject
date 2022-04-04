@@ -45,7 +45,7 @@ app.use(
 const mongoose = require('mongoose');
 
 
-const url = 'mongodb+srv://username:password@cluster0.4wv9m.mongodb.net/fsd3project';
+const url = 'mongodb+srv://swethat03:8341772476@cluster0.4wv9m.mongodb.net/fsd3project';
 
 const connect = mongoose.connect(url);
 
