@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const feedback = require('../models/feedback');
+const Feedback = require('../models/feedback');
 
 const feedbackRouter = express.Router();
 
@@ -13,7 +13,7 @@ feedbackRouter.use(bodyParser.json());
 
 feedbackRouter.route('/')
 .get((req,res,next) => {
-    feedback.find({})
+    Feedback.find({})
     .then((feedbacks) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -23,10 +23,10 @@ feedbackRouter.route('/')
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end('PUT operation not supported on /feedback');
+    res.end('PUT operation not supported on /feedbacks');
 })
 .post((req, res, next) => {
-    feedback.create(req.body)
+    Feedback.create(req.body)
     .then((feedback) => {
         console.log('feedback Created ', feedback);
         res.statusCode = 200;
@@ -37,7 +37,7 @@ feedbackRouter.route('/')
 })
 .delete((req, res, next) => {
         res.statusCode = 403;
-        res.end('Delete operation not supported on /feedback');
+        res.end('Delete operation not supported on /feedbacks');
           
 });
 
@@ -45,14 +45,14 @@ feedbackRouter.route('/')
 feedbackRouter.route('/:feedId')
 .get((req,res,next) => {
         res.statusCode = 403;
-        res.end('Get operation not supported on /feedback');
+        res.end('Get operation not supported on /feedbacks');
 })
 .post((req,res,next) => {
     res.statusCode = 403;
-    res.end('Post operation not supported on /feedback');
+    res.end('Post operation not supported on /feedbacks');
 })
 .put((req, res, next) => {
-    feedback.findByIdAndUpdate(req.params.feedId, {
+    Feedback.findByIdAndUpdate(req.params.feedId, {
         $set: req.body
     }, { new: true })
     .then((feedback) => {
@@ -64,7 +64,7 @@ feedbackRouter.route('/:feedId')
 })
 .delete((req, res, next) => {
         res.statusCode = 403;
-        res.end('Delete operation not supported on /feedback');
+        res.end('Delete operation not supported on /feedbacks');
 });
 
 
