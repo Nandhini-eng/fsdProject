@@ -10,8 +10,10 @@ const feedbackRouter = express.Router();
 
 feedbackRouter.use(bodyParser.json());
 
+var cors = require('cors');
 
 feedbackRouter.route('/')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Feedback.find({})
     .then((feedbacks) => {
@@ -43,6 +45,7 @@ feedbackRouter.route('/')
 
 
 feedbackRouter.route('/:feedId')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
         res.statusCode = 403;
         res.end('Get operation not supported on /feedbacks');

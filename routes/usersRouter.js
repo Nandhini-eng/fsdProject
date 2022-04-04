@@ -5,7 +5,10 @@ const Users = require('../models/users')
 var router = express.Router();
 router.use(bodyParser.json())
 
+var cors = require('cors');
+
 router.route('/')
+.options(cors(), (req,res) => {res.sendStatus(200); })
   .get((req, res, next) => {
     Users.find({})
       .then((user) => {
@@ -50,6 +53,7 @@ router.route('/')
   })
 
 router.route('/:username')
+.options(cors(), (req,res) => {res.sendStatus(200); })
   .get((req, res, next) => {
     Users.find({ 'username': req.params.username })
       .then((user) => {
@@ -122,6 +126,7 @@ router.route('/:username')
   });
 
 router.route('/user/:cred')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
 	const userDetails = req.params.cred.split('+')
 	Users.find({'username' : userDetails[0]})
@@ -147,4 +152,5 @@ router.route('/user/:cred')
 	},(err) => next(err))
 	.catch((err) => next(err))
 })
+
 module.exports = router;

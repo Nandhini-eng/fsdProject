@@ -8,8 +8,10 @@ const blogRouter = express.Router();
 
 blogRouter.use(bodyParser.json());
 
+var cors = require('cors');
 
 blogRouter.route('/')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Blogs.find({})
     .then((blogs) => {
@@ -45,6 +47,7 @@ blogRouter.route('/')
 
 
 blogRouter.route('/:blgId')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Blogs.findById(req.params.blgId)
     .then((blog) => {
@@ -78,7 +81,6 @@ blogRouter.route('/:blgId')
     }, (err) => next(err))
     .catch((err) => next(err));
 });
-
 
 
 module.exports = blogRouter;
