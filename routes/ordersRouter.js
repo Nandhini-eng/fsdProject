@@ -83,6 +83,53 @@ ordersRouter.route('/:orderId')
 
 
 
+ordersRouter.route('/:orderId/:itemId')
+.options(cors(), (req,res) => {res.sendStatus(200); })
+.get((req,res,next) => {
+    Orders.findById(req.params.orderId)
+    .then((item) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        
+        res.json(item.cart.id(req.params.itemId));
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+.post((req, res, next) => {
+  res.statusCode = 403;
+  res.end('POST operation not supported on /orders/'+ req.params.itemId+"/"+req.params.itemId);
+})
+.put((req, res, next) => {
+    res.statusCode = 403;
+  res.end('PUT operation not supported on /orders/'+ req.params.itemId+"/"+req.params.itemId);
+    
+})
+.delete((req, res, next) => {
+    
+    Orders.findById(req.params.orderId)
+    .then((item) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        if (item != null && item.cart.id(req.params.itemId) != null) {
+            item.cart.id(req.params.itemId).remove();
+            item.save()
+            .then((item) => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(item);
+            }, (err) => next(err))
+        }
+       
+    }, (err) => next(err))
+    .catch((err) => next(err));
+
+}
+
+);
+
+
+
+
 
 
 
