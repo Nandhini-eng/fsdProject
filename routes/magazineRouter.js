@@ -8,8 +8,10 @@ const magazineRouter = express.Router();
 
 magazineRouter.use(bodyParser.json());
 
+var cors = require('cors');
 
 magazineRouter.route('/')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Magazines.find({})
     .then((magazines) => {
@@ -45,6 +47,7 @@ magazineRouter.route('/')
 
 
 magazineRouter.route('/:magId')
+.options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
     Magazines.findById(req.params.magId)
     .then((magazine) => {
@@ -79,156 +82,5 @@ magazineRouter.route('/:magId')
     .catch((err) => next(err));
 });
 
-
-
-magazineRouter.route('/:magId/reviews')
-.get((req,res,next) => {
-    Magazines.findById(req.params.magId)
-    .then((magazine) => {
-        if (magazine != null) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(magazine.reviews);
-        }
-        else {
-            err = new Error('Magazine ' + req.params.magId + ' not found');
-            err.status = 404;
-            return next(err);
-        }
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
-.post((req,res,next) => {
-    Magazines.findById(req.params.magId)
-    .then((magazine) => {
-        if (magazine != null) {
-            magazine.reviews.push(req.body);
-            magazine.save()
-            .then((magazine) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(magazine);
-            }, (err) => next(err));
-        }
-        else {
-            err = new Error('Magazine ' + req.params.magId + ' not found');
-            err.status = 404;
-            return next(err);
-        }
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
-.put((req, res, next) => {
-    res.statusCode = 403;
-    res.end('PUT operation not supported on /magazines/'
-        + req.params.magId + '/reviews');
-})
-.delete((req,res,next) => {
-    Magazines.findById(req.params.magId)
-    .then((magazine) => {
-        if (magazine != null) {
-            len = magazine.reviews.length;
-            for (var i = len-1; i >= 0; i--) {
-                magazine.reviews.id(magazine.reviews[i]._id).remove();
-            }
-            magazine.save()
-            .then((magazine) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(magazine);
-            }, (err) => next(err));
-        }
-        else {
-            err = new Error('Magazine ' + req.params.magId + ' not found');
-            err.status = 404;
-            return next(err);
-        }
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
-
-
-magazineRouter.route('/:magId/reviews/:reviewId')
-.get((req,res,next) => {
-    Magazines.findById(req.params.magId)
-    .then((magazine) => {
-        if (magazine != null && magazine.reviews.id(req.params.reviewId) != null) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(magazine.reviews.id(req.params.reviewId));
-        }
-        else if (magazine == null) {
-            err = new Error('Magazine ' + req.params.magId + ' not found');
-            err.status = 404;
-            return next(err);
-        }
-        else {
-            err = new Error('Review ' + req.params.reviewId + ' not found');
-            err.status = 404;
-            return next(err);            
-        }
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
-.post((req, res, next) => {
-    res.statusCode = 403;
-    res.end('POST operation not supported on /magazines/'+ req.params.magId
-        + '/reviews/' + req.params.reviewId);
-})
-.put((req,res,next) => {
-    Magazines.findById(req.params.magId)
-    .then((magazine) => {
-        if (magazine != null && magazine.reviews.id(req.params.reviewId) != null) {
-            if (req.body.rating){
-                magazine.reviews.id(req.params.reviewId).rating = req.body.rating;
-            }
-            if (req.body.review){
-                magazine.reviews.id(req.params.reviewId).review = req.body.review;
-            }
-            magazine.save()
-            .then((magazine) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(magazine);
-            }, (err) => next(err))
-        }
-        else if (magazine == null) {
-            err = new Error('Magazine ' + req.params.magId + ' not found');
-            err.status = 404;
-            return next(err);
-        }
-        else {
-            err = new Error('Review ' + req.params.reviewId + ' not found');
-            err.status = 404;
-            return next(err);            
-        }
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
-.delete((req,res,next) => {
-    Magazines.findById(req.params.magId)
-    .then((magazine) => {
-        if (magazine != null && magazine.reviews.id(req.params.reviewId) != null) {
-            magazine.reviews.id(req.params.reviewId).remove();
-            magazine.save()
-            .then((magazine) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(magazine);
-            }, (err) => next(err))
-        }
-        else if (magazine == null) {
-            err = new Error('Magazine ' + req.params.magId + ' not found');
-            err.status = 404;
-            return next(err);
-        }
-        else {
-            err = new Error('Review ' + req.params.reviewId + ' not found');
-            err.status = 404;
-            return next(err);            
-        }
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
 
 module.exports = magazineRouter;

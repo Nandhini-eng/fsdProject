@@ -4,39 +4,39 @@ const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
-const magazinesSchema = new Schema({
-    name:{
+
+const feedbacksSchema = new Schema({
+    firstname:{
         type: String,
         required:true
     },
-    description:{
+    lastname:{
         type: String,
         required:true
     },
-    image:{
+    telnum:{
         type: String,
         required:true
     },
-    language:{
+    email:{
         type: String,
         required:true
     },
-    price:{
-        type: Currency,
+    contacttype:{
+        type: String,
         required:true
     },
-    featured:{
+    agree:{
         type: Boolean,
         required:true
     },
-    category:{
+    message:{
         type: String,
         required:true
-    }
+    },
 },{
     timestamps: true       
 });
+var feedback = mongoose.model('feedback', feedbacksSchema);
 
-var Magazines = mongoose.model('Magazines', magazinesSchema);
-
-module.exports = Magazines;
+module.exports = feedback;

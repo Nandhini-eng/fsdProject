@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 var reviewSchema = new Schema({
+    itemId: {
+        type: String,
+        required: true
+    },
     rating:  {
         type: Number,
         min: 1,
@@ -20,4 +24,6 @@ var reviewSchema = new Schema({
     timestamps: true
 });
 
-module.exports = reviewSchema;
+var Reviews = mongoose.model('Review', reviewSchema);
+
+module.exports = Reviews;

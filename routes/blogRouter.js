@@ -2,41 +2,41 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const Newspapers = require('../models/newspapers');
+const Blogs = require('../models/blogs');
 
-const newspaperRouter = express.Router();
+const blogRouter = express.Router();
 
-newspaperRouter.use(bodyParser.json());
+blogRouter.use(bodyParser.json());
 
 var cors = require('cors');
 
-newspaperRouter.route('/')
+blogRouter.route('/')
 .options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
-    Newspapers.find({})
-    .then((newspapers) => {
+    Blogs.find({})
+    .then((blogs) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(newspapers);
+        res.json(blogs);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end('PUT operation not supported on /newspapers');
+    res.end('PUT operation not supported on /blogs');
 })
 .post((req, res, next) => {
-    Newspapers.create(req.body)
-    .then((newspaper) => {
-        console.log('Newspaper Created ', newspaper);
+    Blogs.create(req.body)
+    .then((blogs) => {
+        console.log('Blog Created ', blogs);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(newspaper);
+        res.json(blogs);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .delete((req, res, next) => {
-    Newspapers.remove({})
+    Blogs.remove({})
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -46,34 +46,34 @@ newspaperRouter.route('/')
 });
 
 
-newspaperRouter.route('/:paperId')
+blogRouter.route('/:blgId')
 .options(cors(), (req,res) => {res.sendStatus(200); })
 .get((req,res,next) => {
-    Newspapers.findById(req.params.paperId)
-    .then((newspaper) => {
+    Blogs.findById(req.params.blgId)
+    .then((blog) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(newspaper);
+        res.json(blog);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
   res.statusCode = 403;
-  res.end('POST operation not supported on /newspapers/'+ req.params.paperId);
+  res.end('POST operation not supported on /blogs/'+ req.params.blgId);
 })
 .put((req, res, next) => {
-    Newspapers.findByIdAndUpdate(req.params.paperId, {
+    Blogs.findByIdAndUpdate(req.params.blgId, {
         $set: req.body
     }, { new: true })
-    .then((newspaper) => {
+    .then((blog) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(newspaper);
+        res.json(blog);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .delete((req, res, next) => {
-    Newspapers.findByIdAndRemove(req.params.paperId)
+    Blogs.findByIdAndRemove(req.params.blgId)
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -82,4 +82,5 @@ newspaperRouter.route('/:paperId')
     .catch((err) => next(err));
 });
 
-module.exports = newspaperRouter;
+
+module.exports = blogRouter;
