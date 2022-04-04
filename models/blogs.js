@@ -4,15 +4,10 @@ const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
-
-
-
-
 const blogSchema = new Schema({
     user: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     title: {
         type: String,
