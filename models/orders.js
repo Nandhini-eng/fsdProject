@@ -14,8 +14,7 @@ const cartSchema = require('./cart');
 const ordersSchema = new Schema({
     fullName: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     address: {
         type: String,

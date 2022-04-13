@@ -44,8 +44,8 @@ app.use(
 
 const mongoose = require('mongoose');
 
-
-const url = 'mongodb+srv://Bhanu:bhanu@cluster0.4wv9m.mongodb.net/fsd3project';
+//Provide your credentials for username,password to connect to the mongoDB Cloud
+const url = 'mongodb+srv://username:password@cluster0.4wv9m.mongodb.net/fsd3project';
 
 const connect = mongoose.connect(url);
 
