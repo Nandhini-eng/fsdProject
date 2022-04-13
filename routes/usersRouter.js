@@ -7,6 +7,9 @@ router.use(bodyParser.json())
 
 var cors = require('cors');
 
+var jwt = require("jsonwebtoken");
+
+let secret = "iiits"
 router.route('/')
 .options(cors(), (req,res) => {res.sendStatus(200); })
   .get((req, res, next) => {
@@ -125,32 +128,38 @@ router.route('/:username')
       .catch((err) => next(err))
   });
 
-router.route('/user/:cred')
-.options(cors(), (req,res) => {res.sendStatus(200); })
-.get((req,res,next) => {
-	const userDetails = req.params.cred.split('+')
-	Users.find({'username' : userDetails[0]})
-	.then((checkusername)=>{
-    
-    if(checkusername.length!= 0){
-			if(checkusername[0].password == userDetails[1]){
-				res.statusCode = 200;
-				res.setHeader('Content-Type', 'application/json');
-				res.json('User credentials true')
-			}
-			else{
-				err = new Error('Password is wrong');
-				err.status = 404;
-				return next(err);
-			}
-		}
-		else{
-			err = new Error('User ' + userDetails[0] + ' doesnot exists');
-			err.status = 404;
-			return next(err);
-		}
-	},(err) => next(err))
-	.catch((err) => next(err))
-})
+router.route('/login')
+ .options(cors(), (req,res) => {res.sendStatus(200); })
+.post((req,res,next)=>{
+  console.log(req.body.password)
+  Users.find({'username' : req.body.username})
+.then((checkusername)=>{
+  
+  if(checkusername.length!= 0){
+    if(checkusername[0].password == req.body.password){
+      var token = jwt.sign({id : checkusername[0]._id}, secret, {expiresIn: 86400});
+      res.statusCode = 200;
+      // res.setHeader('Content-Type', 'application/json');
+      // res.json(checkusername)
+      res.send({
+        id: checkusername[0]._id,
+        username: checkusername[0].username,
+        accessToken: token
+      });
+    }
+    else{
+      err = new Error('Password is wrong');
+      err.status = 404;
+      return next(err);
+    }
+  }
+  else{
+    err = new Error('User ' + req.body.username + ' doesnot exists');
+    err.status = 404;
+    return next(err);
+  }
+},(err) => next(err))
+.catch((err) => next(err))
+}) 
 
 module.exports = router;

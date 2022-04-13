@@ -579,27 +579,22 @@ paths:
         '404':
           description : Username not found
 
-  /users/user/{cred}:
-    get:
-      summary: Validates user.
+  /users/login:
+    post:
+      summary: Checks an user
       tags: [Users]
-      parameters:
-        - name: username + password
-          in: path
-          required: true
-          description: username, password created by user
-          schema:
-            type : string
-      responses: 
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        '404':
-          description: User credentials not true.
-
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Credentials true
+        '404' :
+          description: Incorrect credentials
+          
   /orders:
     get:
       summary: Lists of all orders
