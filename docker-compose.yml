@@ -1,0 +1,29 @@
+version: '3.8'
+
+services: 
+  backendcodebase:
+    build: ./wbd_project
+    container_name: wbd_project_c
+    restart: unless-stopped
+    ports:
+      - '3001:3001' 
+    volumes:
+      - ./wbd_project:/app
+      - ./app/node_modules
+
+  frontendcodebase:
+    build: ./fsd_project
+    container_name: fsd_project_c
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true  
+      
+
+# volumes: 
+#   db:
+
+# networks:
+#   backend:
+#   frontend:

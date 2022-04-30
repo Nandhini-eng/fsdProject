@@ -2,9 +2,6 @@
   "name": "wad-project",
   "version": "0.0.0",
   "private": true,
-  "scripts": {
-    "start": "nodemon ./bin/www"
-  },
   "dependencies": {
     "body-parser": "^1.19.2",
     "concurrently": "^7.0.0",
@@ -22,5 +19,12 @@
     "node": "^17.4.0",
     "swagger-ui-express": "^4.3.0",
     "yamljs": "^0.3.0"
+  },
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "heroku-postbuild": "cd fsd_project && npm install --only=dev && npm install && npm run build"
+  },
+  "engines": {
+    "node": "16.5.0"
   }
 }

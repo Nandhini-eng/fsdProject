@@ -32,7 +32,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "fsd_project", "build")));
 app.use(cors({origin: true, credentials: true}));
 
 app.use(
@@ -46,7 +46,7 @@ const mongoose = require('mongoose');
 
 
 //Provide your credentials for username,password to connect to the mongoDB Cloud
-const url = 'mongodb+srv://username:password@cluster0.4wv9m.mongodb.net/fsd3project';
+const url = 'mongodb+srv://Nandhini:Nandy2002@cluster0.4wv9m.mongodb.net/fsd3project';
 
 const connect = mongoose.connect(url);
 
@@ -64,6 +64,10 @@ app.use('/imgUpload', uploadRouter);
 app.use('/feedbacks',feedbackRouter);
 app.use('/blogs',blogRouter);
 app.use('/orders',ordersRouter);
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "fsd_project", "build", "index.html"));
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
